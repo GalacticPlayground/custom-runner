@@ -1,0 +1,38 @@
+# ARC Runner Scale Set Values for GalacticPlayground/cosmic
+# This configures self-hosted runners with custom build tools
+
+# GitHub repository to connect runners to
+githubConfigUrl: "https://github.com/GalacticPlayground/cosmic"
+
+# Kubernetes secret containing GitHub PAT for runner registration
+githubConfigSecret: "github-token"
+
+# Runner scaling configuration
+minRunners: 1
+maxRunners: 10
+
+# Runner pod template with custom image
+template:
+  spec:
+    # Image pull secret for private GHCR images
+    imagePullSecrets:
+      - name: ghcr-secret
+    containers:
+      - name: runner
+        # Custom runner image with build tools (make, g++, python3, etc.)
+        image: ghcr.io/galacticplayground/custom-runner:latest
+        # Ensure we always pull the latest image
+        imagePullPolicy: Always
+        # Resource limits and requests
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "1Gi"
+          limits:
+            cpu: "2"
+            memory: "4Gi"
+
+# Optional: Runner labels for targeting specific runners in workflows
+# runnerLabels:
+#   - custom-runner
+#   - node-build-tools
