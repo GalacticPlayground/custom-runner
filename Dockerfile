@@ -16,3 +16,6 @@ RUN apt-get update && apt-get install -y \
 
 # Switch back to runner user for security
 USER runner
+
+# Set the entrypoint to run.sh which starts the runner
+ENTRYPOINT ["/home/runner/run.sh"]

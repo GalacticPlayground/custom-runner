@@ -20,7 +20,7 @@ template:
     containers:
       - name: runner
         # Custom runner image with build tools (make, g++, python3, etc.)
-        image: ghcr.io/galacticplayground/custom-runner:latest
+        image: ghcr.io/galacticplayground/custom-runner@sha256:bd342718a90a58fdab7126beb311d5ea8b9befdedfb274f4bebebba893bd38d2
         # Ensure we always pull the latest image
         imagePullPolicy: Always
         # Resource limits and requests
