@@ -1,0 +1,35 @@
+name: Auto Rebuild on Runner Update
+
+on:
+  image_version:
+    names:
+      - "actions-runner"
+    versions:
+      - "*"
+  workflow_dispatch:
+
+jobs:
+  trigger-rebuild:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log new runner image version
+        run: |
+          echo "New actions/runner image version detected"
+          echo "Triggering rebuild of custom runner image"
+
+      - name: Trigger build workflow
+        run: |
+          gh workflow run build-and-push.yml --ref main
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Create notification
+        run: |
+          echo "::notice::Triggered custom runner rebuild due to new actions/runner image release"
