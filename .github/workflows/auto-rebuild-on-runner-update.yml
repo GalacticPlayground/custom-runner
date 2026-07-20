@@ -1,11 +1,9 @@
-name: Auto Rebuild on Runner Update
+name: Weekly Runner Rebuild
 
 on:
-  image_version:
-    names:
-      - "actions-runner"
-    versions:
-      - "*"
+  schedule:
+    # Run weekly on Monday at 06:00 UTC
+    - cron: '0 6 * * 1'
   workflow_dispatch:
 
 jobs:
@@ -19,9 +17,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Log new runner image version
+      - name: Log scheduled rebuild
         run: |
-          echo "New actions/runner image version detected"
+          echo "Weekly scheduled rebuild triggered"
           echo "Triggering rebuild of custom runner image"
 
       - name: Trigger build workflow
@@ -32,4 +30,4 @@ jobs:
 
       - name: Create notification
         run: |
-          echo "::notice::Triggered custom runner rebuild due to new actions/runner image release"
+          echo "::notice::Triggered custom runner rebuild on weekly schedule"
